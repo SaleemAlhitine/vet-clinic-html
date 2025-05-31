@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>عيادة القطط - معلومات وقائمة أسعار</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+    
+    body
+     {
+   font-family: 'Cairo', sans-serif;
+  margin: 0;
+  color: #333;
+  direction: rtl;
+  background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)),
+              url('png-clipart-logo-horse-veterinarian-clinique-veterinaire-bonnyville-veterinary-clinic-horse-horse-blue.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+
+    
+    {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      background: #f9fafc;
+      color: #333;
+      direction: rtl;
+    }
+    
+    header {
+      background: linear-gradient(90deg, #3498db, #2980b9);
+      padding: 25px 10px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    header h1 {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    main {
+      max-width: 1200px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      text-align: center;
+    }
+    
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    
+    .card:hover {
+      transform: scale(1.06);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.2);
+    }
+    
+    .card img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 3px solid #2980b9;
+    }
+    
+    .card h3 {
+      margin: 18px 15px 8px;
+      color: #2980b9;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    
+    .card p {
+      margin: 0 15px 18px;
+      font-size: 1.1rem;
+      color: #555;
+      min-height: 60px;
+      line-height: 1.3;
+    }
+    
+    /* زر قائمة الأسعار */
+    #priceBtn {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 16px 55px;
+      font-size: 1.5rem;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: 800;
+      box-shadow: 0 6px 18px rgba(39, 174, 96, 0.7);
+      transition: background-color 0.3s ease;
+      margin-bottom: 80px;
+    }
+    
+    #priceBtn:hover {
+      background-color: #2ecc71;
+      box-shadow: 0 8px 22px rgba(46, 204, 113, 0.9);
+    }
+    
+    /* النافذة المنبثقة للمعلومات */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      max-width: 650px;
+      width: 90vw;
+      z-index: 1100;
+      text-align: right;
+      direction: rtl;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #2c3e50;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    
+    .popup h3 {
+      font-size: 2.4rem;
+      color: #2980b9;
+      font-weight: 900;
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    
+    .popup p {
+      margin-bottom: 18px;
+    }
+    
+    .popup ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+    }
+    
+    .popup ul li {
+      background: #ecf0f1;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #34495e;
+    }
+    
+    .popup button.closeBtn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.25rem;
+      display: block;
+      margin: 30px auto 0 auto;
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.8);
+      transition: background 0.3s ease;
+    }
+    
+    .popup button.closeBtn:hover {
+      background: #c0392b;
+      box-shadow: 0 7px 20px rgba(192, 57, 43, 0.95);
+    }
+    
+    /* خلفية مظللة */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      z-index: 1050;
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>عيادة القطط - صحتهم وسعادتهم أولوية</h1>
+  </header>
+  
+  <main>
+    <section class="gallery">
+      <div class="card" data-cat="shirazi">
+        <img src="download (1).jpg" alt="قطة شيرازي" />
+        <h3>قطة شيرازي</h3>
+        <p>قطط الشيرازي تتميز بشعرها الطويل وعيونها اللامعة.</p>
+      </div>
+      <div class="card" data-cat="small">
+        <img src="download.jpg" alt="قطة صغيرة" />
+        <h3>قطة صغيرة</h3>
+        <p>القطط الصغيرة لطيفة جداً وتحب اللعب باستمرار.</p>
+      </div>
+      <div class="card" data-cat="sleeping">
+        <img src="download (2).jpg" alt="قطة نائمة" />
+        <h3>قطة نائمة</h3>
+        <p>القطط تقضي جزء كبير من يومها في النوم والراحة.</p>
+      </div>
+      <div class="card" data-cat="gray">
+        <img src="download (3).jpg" alt="قطة رمادية" />
+        <h3>قطة رمادية</h3>
+        <p>الألوان الرمادية تعطي القطط مظهر هادئ وجميل.</p>
+      </div>
+<div class="card" data-cat="abyssinian">
+  <img src="download (4).jpg" alt="قط حبشي" />
+  <h3>القط الحبشي</h3>
+  <p>قط ذكي وفضولي للغاية، يتمتع بمظهر أنيق وألوان جذابة.</p>
+</div>
+
+<div class="card" data-cat="mainecoon">
+  <img src="download (5).jpg" alt="قط ماين كون" />
+  <h3>القط ماين كون</h3>
+  <p>أكبر سلالات القطط المنزلية حجماً، لطيف وهادئ.</p>
+</div>
+
+<div class="card" data-cat="russianblue">
+  <img src="images (1).jpg" alt="قط روسي أزرق" />
+  <h3>القط الروسي الأزرق</h3>
+  <p>قط أنيق وودود بفراء فضي وعينين خضراوين.</p>
+</div>
+
+
+
+
+    </section>
+    
+    <button id="priceBtn">عرض قائمة الأسعار وخدمات العيادة</button>
+  </main>
+  
+  <!-- نافذة المعلومات عن القطط -->
+  <div id="overlay"></div>
+  
+  <div id="catInfoPopup" class="popup">
+    <h3 id="catTitle">عنوان القطة</h3>
+    <p id="catDescription">وصف القطة يظهر هنا.</p>
+    <ul id="catDetails">
+      <!-- تفاصيل إضافية -->
+    </ul>
+    <button class="closeBtn">إغلاق</button>
+  </div>
+  
+  <!-- نافذة قائمة الأسعار -->
+  <div id="pricePopup" class="popup">
+    <h3>قائمة أسعار وخدمات العيادة</h3>
+    <ul>
+        <li>فحص شامل للقطط -10دينار  </li>
+        <li>تطعيمات ولقاحات -15دينار </li>
+        <li>تنظيف الأسنان – 10دينار</li>
+        <li>قص أظافر وتنظيف فراء – 20دينار</li>
+        <li>عمليات جراحية بسيطة - حسب الحالة</li>
+        <li>استشارات غذائية وسلوكية -25دينار </li>
+        <li>علاج الطفيليات الخارجية والداخلية – 20دينار</li>
+        <li>خدمات الطوارئ والعناية المركزة - حسب الحالة</li>
+      </ul>
+  
+    <button class="closeBtn">إغلاق</button>
+  </div>
+  
+  <script>
+    const overlay = document.getElementById('overlay');
+    
+    // بيانات كل نوع قطة - تقدر تضيف أو تعدل بسهولة
+    const catData = {
+      shirazi: {
+        title: "قطة شيرازي",
+        description: "قطط الشيرازي تتميز بشعرها الطويل وعيونها اللامعة، وهي من أكثر السلالات المحبوبة بسبب مظهرها الرقيق وطباعها الهادئة.",
+        details: [
+          "العمر المتوقع: 12-16 سنة",
+          "الوزن: 3.5 - 5 كيلوغرام",
+          "النظام الغذائي: تحتاج إلى غذاء عالي البروتين",
+          "مستوى النشاط: متوسط إلى عالي، تحب اللعب والاستكشاف",
+          "الرعاية: تحتاج إلى تمشيط منتظم لشعرها"
+        ]
+      },
+      small: {
+        title: "قطة صغيرة",
+        description: "القطط الصغيرة لطيفة جداً وتحب اللعب، وهي في مرحلة النمو التي تحتاج فيها إلى عناية خاصة واهتمام بالغذاء.",
+        details: [
+          "العمر: أقل من سنة",
+          "الوزن: يختلف حسب النمو",
+          "الغذاء: غذاء خاص للقطط الصغيرة غني بالعناصر الغذائية",
+          "النشاط: عالي جداً، تحتاج إلى ألعاب وتمارين مستمرة",
+          "الرعاية: تطعيمات دورية وزيارات للطبيب البيطري"
+        ]
+      },
+      sleeping: {
+        title: "قطة نائمة",
+        description: "القطط تقضي جزء كبير من يومها في النوم والراحة، مما يساعدها على تجديد طاقتها ونمو خلايا جسمها.",
+        details: [
+          "مدة النوم: 12-16 ساعة يومياً",
+          "النشاط: تميل إلى الهدوء بعد اللعب",
+          "الرعاية: توفير مكان دافئ ومريح للنوم",
+          "الصحة: النوم الجيد علامة على صحة جيدة"
+        ]
+      },
+      gray: {
+        title: "قطة رمادية",
+        description: "الألوان الرمادية تعطي القطط مظهر هادئ وأنيق، وهي عادة قطط محبة للناس وتتمتع بشخصية مستقلة.",
+        details: [
+          "العمر المتوقع: 13-17 سنة",
+          "الوزن: 3-6 كيلوغرامات",
+          "النظام الغذائي: غذاء متوازن",
+          "النشاط: متوسط",
+          "الرعاية: عناية دورية بالفراء والأظافر"
+        ]
+      },
+abyssinian: {
+  title: "القط الحبشي",
+  description: "قطط حبشية ذكية ونشيطة، تتميز بفرائها القصير وفضولها الدائم.",
+  details: [
+    "العمر المتوقع: 12-15 سنة",
+    "الوزن: 4 - 5 كجم",
+    "الغذاء: بروتين عالي",
+    "النشاط: عالي جدًا",
+    "الرعاية: يحتاج لعبًا يوميًا"
+  ]
+},
+mainecoon: {
+  title: "القط ماين كون",
+  description: "ماين كون من أكبر القطط المنزلية، لطيف وحنون ومثالي للأطفال.",
+  details: [
+    "العمر المتوقع: 13-15 سنة",
+    "الوزن: 6 - 10 كجم",
+    "الغذاء: غني بالسعرات",
+    "النشاط: متوسط",
+    "الرعاية: تمشيط الفرو الكثيف"
+  ]
+},
+russianblue: {
+  title: "القط الروسي الأزرق",
+  description: "قط هادئ بعيون خضراء وفراء فضي، يحب الأماكن الهادئة.",
+  details: [
+    "العمر المتوقع: 15-20 سنة",
+    "الوزن: 3.5 - 5 كجم",
+    "الغذاء: معتدل السعرات",
+    "النشاط: متوسط",
+    "الرعاية: تمشيط خفيف أسبوعيًا"
+  ]
+}
+
+
+    };
+    
+    // العناصر
+    const cards = document.querySelectorAll('.card');
+    const catInfoPopup = document.getElementById('catInfoPopup');
+    const catTitle = document.getElementById('catTitle');
+    const catDescription = document.getElementById('catDescription');
+    const catDetails = document.getElementById('catDetails');
+    const closeBtns = document.querySelectorAll('.closeBtn');
+    const priceBtn = document.getElementById('priceBtn');
+    const pricePopup = document.getElementById('pricePopup');
+    
+    // فتح نافذة معلومات القطة عند الضغط على الصورة
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const catKey = card.getAttribute('data-cat');
+        const data = catData[catKey];
+        if (!data) return;
+        
+        catTitle.textContent = data.title;
+        catDescription.textContent = data.description;
+        
+        // تهيئة القائمة
+        catDetails.innerHTML = '';
+        data.details.forEach(detail => {
+          const li = document.createElement('li');
+          li.textContent = detail;
+          catDetails.appendChild(li);
+        });
+        
+        catInfoPopup.style.display = 'block';
+        overlay.style.display = 'block';
+        catInfoPopup.style.opacity = 0;
+        setTimeout(() => catInfoPopup.style.opacity = 1, 10);
+      });
+    });
+    
+    // زر إغلاق النوافذ
+    closeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catInfoPopup.style.display = 'none';
+        pricePopup.style.display = 'none';
+        overlay.style.display = 'none';
+      });
+    });
+    
+    // إغلاق بالنقر على الخلفية المظللة
+    overlay.addEventListener('click', () => {
+      catInfoPopup.style.display = 'none';
+      pricePopup.style.display = 'none';
+      overlay.style.display = 'none';
+    });
+    
+    // عرض قائمة الأسعار عند الضغط على الزر
+    priceBtn.addEventListener('click', () => {
+      pricePopup.style.display = 'block';
+      overlay.style.display = 'block';
+      pricePopup.style.opacity = 0;
+      setTimeout(() => pricePopup.style.opacity = 1, 10);
+    });
+  </script>
+</body>
+</html>
